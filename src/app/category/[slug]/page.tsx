@@ -3,10 +3,26 @@ import { getPosts } from '@/lib/posts';
 import { CATEGORIES } from '@/lib/constants';
 import { notFound } from 'next/navigation';
 import PostCard from '@/components/post-card';
+import type { Metadata } from 'next';
 
 interface CategoryPageProps {
   params: {
     slug: string;
+  };
+}
+
+export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
+  const category = CATEGORIES.find((c) => c.slug === params.slug);
+
+  if (!category) {
+    return {
+      title: 'Category Not Found',
+    };
+  }
+
+  return {
+    title: category.name,
+    description: `Browse the latest articles in the ${category.name} category.`,
   };
 }
 

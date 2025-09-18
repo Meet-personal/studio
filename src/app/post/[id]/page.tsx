@@ -5,10 +5,41 @@ import Image from 'next/image';
 import { CATEGORIES } from '@/lib/constants';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
 interface PostPageProps {
   params: {
     id: string;
+  };
+}
+
+export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
+  const post = getPost(params.id);
+
+  if (!post) {
+    return {
+      title: 'Post Not Found',
+    };
+  }
+
+  return {
+    title: post.title,
+    description: post.description,
+    keywords: post.tags.join(', '),
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: 'article',
+      url: `https://your-domain.com/post/${post.id}`, // TODO: Replace with your actual domain
+      images: [
+        {
+          url: post.image,
+          width: 600,
+          height: 400,
+          alt: post.title,
+        },
+      ],
+    },
   };
 }
 
