@@ -46,9 +46,11 @@ export default function RootLayout({
               </SidebarContent>
             </Sidebar>
             <SidebarInset>
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
+              <div className="flex flex-1 flex-col">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
             </SidebarInset>
           </div>
         </SidebarProvider>
