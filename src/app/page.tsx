@@ -1,3 +1,4 @@
+
 import { getPosts } from '@/lib/posts';
 import { TodaysPosts } from '@/components/todays-posts';
 import SearchPosts from '@/components/search-posts';
