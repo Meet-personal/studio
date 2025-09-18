@@ -6,6 +6,7 @@ import { addPost, hasPostForToday } from '@/lib/posts';
 import { revalidatePath } from 'next/cache';
 import { findImage } from '@/lib/placeholder-images';
 import { CATEGORIES } from '@/lib/constants';
+import { generateContactEmails, type GenerateContactEmailsInput } from '@/ai/flows/generate-contact-emails';
 
 export type FormState = {
   message: string;
@@ -50,7 +51,6 @@ export async function createPost(
       imageHint: image.imageHint,
     };
 
-    // The addPost function now handles ID and createdAt
     const newPost = addPost(postData);
 
     revalidatePath('/');
@@ -62,4 +62,46 @@ export async function createPost(
     console.error(e);
     return { message: 'Failed to generate post. Please try again.', type: 'error' };
   }
+}
+
+export async function handleContactForm(
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const subject = formData.get('subject') as string;
+    const message = formData.get('message') as string;
+
+    if (!name || !email || !subject || !message) {
+        return { message: 'Please fill out all fields.', type: 'error' };
+    }
+
+    try {
+        const emailInput: GenerateContactEmailsInput = { name, email, subject, message };
+        const emails = await generateContactEmails(emailInput);
+        
+        // TODO: Implement email sending logic here
+        // For example, using a service like Resend:
+        // await resend.emails.send({
+        //   from: 'Your App <onboarding@resend.dev>',
+        //   to: 'your-admin-email@example.com',
+        //   subject: emails.adminEmail.subject,
+        //   html: emails.adminEmail.body,
+        // });
+        // await resend.emails.send({
+        //   from: 'Your App <onboarding@resend.dev>',
+        //   to: email,
+        //   subject: emails.userEmail.subject,
+        //   html: emails.userEmail.body,
+        // });
+
+        console.log("Admin Email:", emails.adminEmail);
+        console.log("User Email:", emails.userEmail);
+
+        return { message: "Thank you for your message! We'll get back to you shortly.", type: 'success' };
+    } catch (e) {
+        console.error(e);
+        return { message: 'Failed to send message. Please try again later.', type: 'error' };
+    }
 }
