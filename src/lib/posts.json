@@ -1,0 +1,109 @@
+{
+  "posts": [
+    {
+      "id": "the-future-of-quantum-computing-8k0ivw",
+      "title": "The Future of Quantum Computing",
+      "description": "Exploring the next frontier of computation.",
+      "content": "Quantum computing is poised to revolutionize various industries by solving problems currently intractable for classical computers. This post explores the latest breakthroughs and what they mean for the future of technology.",
+      "category": "it",
+      "tags": [
+        "quantum",
+        "computing",
+        "tech"
+      ],
+      "createdAt": "2025-09-18T16:09:19.167Z",
+      "image": "https://picsum.photos/seed/emf1obn59r8/600/400",
+      "imageHint": "computer code"
+    },
+    {
+      "id": "a-journey-through-the-swiss-alps-iasq8d",
+      "title": "A Journey Through the Swiss Alps",
+      "description": "Your ultimate guide to the majestic alpine landscapes of Switzerland.",
+      "content": "Discover the breathtaking beauty of the Swiss Alps. From serene lakes to majestic peaks, this guide will help you plan the ultimate alpine adventure.",
+      "category": "travel",
+      "tags": [
+        "travel",
+        "switzerland",
+        "alps"
+      ],
+      "createdAt": "2025-09-17T16:09:19.168Z",
+      "image": "https://picsum.photos/seed/i4g3veyoowq/600/400",
+      "imageHint": "exotic landscape"
+    },
+    {
+      "id": "navigating-the-volatility-of-cryptocurre-9s6t2q",
+      "title": "Navigating the Volatility of Cryptocurrency",
+      "description": "Strategies for managing risk in the fast-paced world of digital assets.",
+      "content": "The crypto market is known for its dramatic swings. Learn strategies to manage risk and potentially profit from the inherent volatility of digital assets.",
+      "category": "finance",
+      "tags": [
+        "crypto",
+        "finance",
+        "investing"
+      ],
+      "createdAt": "2025-09-18T16:09:19.168Z",
+      "image": "https://picsum.photos/seed/m0boabdj6g/600/400",
+      "imageHint": "stock market"
+    },
+    {
+      "id": "the-art-of-effective-leadership-in-a-rem-5emg6q",
+      "title": "The Art of Effective Leadership in a Remote World",
+      "description": "Mastering the skills to lead and inspire teams from anywhere.",
+      "content": "Leading a remote team presents unique challenges. This article covers essential skills and tools for fostering collaboration and productivity from a distance.",
+      "category": "business",
+      "tags": [
+        "business",
+        "leadership",
+        "remote work"
+      ],
+      "createdAt": "2025-09-16T16:09:19.168Z",
+      "image": "https://picsum.photos/seed/vzozicecl4a/600/400",
+      "imageHint": "office building"
+    },
+    {
+      "id": "digital-transformation-a-consultants-per-eb88c4",
+      "title": "Digital Transformation: A Consultant’s Perspective",
+      "description": "Expert insights on navigating the complexities of business modernization.",
+      "content": "How can businesses successfully navigate digital transformation? A seasoned consultant shares insights on strategy, implementation, and avoiding common pitfalls.",
+      "category": "consultant",
+      "tags": [
+        "consulting",
+        "digital transformation",
+        "strategy"
+      ],
+      "createdAt": "2025-09-15T16:09:19.168Z",
+      "image": "https://picsum.photos/seed/w15n8d4vbr/600/400",
+      "imageHint": "business meeting"
+    },
+    {
+      "id": "top-tech-companies-to-watch-in-2024-fc30eh",
+      "title": "Top Tech Companies to Watch in 2024",
+      "description": "A look at the innovators and market disruptors shaping our future.",
+      "content": "From AI startups to established giants, we spotlight the tech companies that are making significant waves this year through innovation and market disruption.",
+      "category": "companies",
+      "tags": [
+        "companies",
+        "tech",
+        "innovation"
+      ],
+      "createdAt": "2025-09-14T16:09:19.168Z",
+      "image": "https://picsum.photos/seed/048z6zxo10vt/600/400",
+      "imageHint": "corporate headquarters"
+    },
+    {
+      "id": "bitcoin-vs-ethereum-whats-the-difference-8hnh9t",
+      "title": "Bitcoin vs. Ethereum: What’s the Difference?",
+      "description": "A deep dive into the two titans of the cryptocurrency world.",
+      "content": "A deep dive into the two largest cryptocurrencies, comparing their technology, use cases, and future potential in the evolving digital economy.",
+      "category": "cryptocoins",
+      "tags": [
+        "bitcoin",
+        "ethereum",
+        "blockchain"
+      ],
+      "createdAt": "2025-09-18T16:09:19.168Z",
+      "image": "https://picsum.photos/seed/5lyggq001j9/600/400",
+      "imageHint": "digital currency"
+    }
+  ]
+}
