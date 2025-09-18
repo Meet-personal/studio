@@ -73,10 +73,3 @@ export const addPost = (post: Omit<Post, 'id' | 'createdAt'>) => {
   posts.unshift(newPost);
   return newPost;
 };
-
-export function hasPostForToday(categorySlug: string): boolean {
-  return posts.some(
-    (post) =>
-      post.category === categorySlug && isToday(new Date(post.createdAt))
-  );
-}

@@ -2,7 +2,7 @@
 'use server';
 
 import { generateBlogPost } from '@/ai/flows/generate-blog-post';
-import { addPost, hasPostForToday } from '@/lib/posts';
+import { addPost } from '@/lib/posts';
 import { revalidatePath } from 'next/cache';
 import { findImage } from '@/lib/placeholder-images';
 import { CATEGORIES } from '@/lib/constants';
@@ -25,10 +25,6 @@ export async function createPost(
   const categorySlug = formData.get('category') as string;
   if (!categorySlug) {
     return { message: 'Category is required.', type: 'error' };
-  }
-
-  if (hasPostForToday(categorySlug)) {
-    return { message: `A post for this category has already been created today.`, type: 'error' };
   }
   
   const categoryDetails = CATEGORIES.find(c => c.slug === categorySlug);
