@@ -49,7 +49,7 @@ export async function createPost(
     };
 
     // The addPost function now handles ID and createdAt
-    const newPost = addPost(postData as any);
+    const newPost = addPost(postData);
 
     revalidatePath('/');
     revalidatePath(`/category/${categorySlug}`);

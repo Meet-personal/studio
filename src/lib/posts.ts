@@ -4,15 +4,16 @@ import { CATEGORIES } from '@/lib/constants';
 import { findImage } from './placeholder-images';
 import { isToday } from 'date-fns';
 
-const generatePostId = (createdAt: Date, categorySlug: string) => {
-    return `post_${createdAt.getTime()}_${categorySlug.replace(/\s+/g, '-')}`;
+const generatePostId = (createdAt: Date, title: string) => {
+    const formattedTitle = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').slice(0, 50);
+    return `${createdAt.getTime()}-${formattedTitle}`;
 }
 
 const createInitialPost = (categorySlug: string, title: string, content: string, tags: string[], daysAgo: number): Post => {
     const createdAt = new Date();
     createdAt.setDate(createdAt.getDate() - daysAgo);
     const image = findImage(categorySlug, true); // use random image
-    const id = generatePostId(createdAt, categorySlug)
+    const id = generatePostId(createdAt, title)
     return {
         id,
         title,
@@ -51,9 +52,9 @@ export const getPost = (id: string): Post | undefined => {
   return posts.find(post => post.id === id);
 };
 
-export const addPost = (post: Post) => {
+export const addPost = (post: Omit<Post, 'id' | 'createdAt'>) => {
   const createdAt = new Date();
-  const id = generatePostId(createdAt, post.category)
+  const id = generatePostId(createdAt, post.title);
   const newPost: Post = {
     ...post,
     id,
