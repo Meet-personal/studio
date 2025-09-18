@@ -5,9 +5,19 @@ import { findImage } from './placeholder-images';
 import { isToday } from 'date-fns';
 
 const generatePostId = (title: string) => {
-    const baseId = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').slice(0, 40);
+    // Generate a safe, URL-friendly slug from the title
+    const baseId = title
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+        .replace(/\s+/g, '-')         // Replace spaces with hyphens
+        .replace(/-+/g, '-');         // Replace multiple hyphens with single one
+
+    // Get a unique suffix
     const randomSuffix = Math.random().toString(36).substring(2, 8);
-    return `${baseId}-${randomSuffix}`;
+    
+    // Combine and slice to a reasonable length
+    return `${baseId.slice(0, 40)}-${randomSuffix}`;
 }
 
 const createInitialPost = (categorySlug: string, title: string, description: string, content: string, tags: string[], daysAgo: number): Post => {
