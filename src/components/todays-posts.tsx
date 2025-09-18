@@ -2,28 +2,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { isToday } from 'date-fns';
 import type { Post } from '@/lib/types';
 import PostCard from '@/components/post-card';
 
 export function TodaysPosts({ allPosts, isSearchResults }: { allPosts: Post[], isSearchResults?: boolean }) {
-  const [displayPosts, setDisplayPosts] = useState<Post[]>([]);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  useEffect(() => {
-    if (isClient) {
-      if (isSearchResults) {
-        setDisplayPosts(allPosts);
-      } else {
-        const filteredPosts = allPosts.filter(post => isToday(new Date(post.createdAt)));
-        setDisplayPosts(filteredPosts);
-      }
-    }
-  }, [allPosts, isClient, isSearchResults]);
 
   if (!isClient) {
     return (
@@ -40,20 +27,20 @@ export function TodaysPosts({ allPosts, isSearchResults }: { allPosts: Post[], i
     );
   }
 
-  if (displayPosts.length === 0) {
+  if (allPosts.length === 0) {
     return (
       <div className="text-center py-16 text-muted-foreground border-2 border-dashed rounded-lg">
         <p className="text-lg font-semibold">
-            {isSearchResults ? 'No posts found.' : 'No posts generated yet today.'}
+            {isSearchResults ? 'No posts found.' : 'No posts have been created yet.'}
         </p>
-        <p>{isSearchResults ? 'Try a different search term.' : 'Check back later or explore the categories.'}</p>
+        <p>{isSearchResults ? 'Try a different search term.' : 'You can create one in the admin dashboard.'}</p>
       </div>
     );
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {displayPosts.map((post) => (
+      {allPosts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
     </div>
