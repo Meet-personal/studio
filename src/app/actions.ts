@@ -35,8 +35,8 @@ export async function createPost(
   try {
     const generatedData = await generateBlogPost({ category: categoryDetails.name });
 
-    if (!generatedData || !generatedData.title || !generatedData.content) {
-        return { message: 'AI failed to generate a valid post. The response was incomplete.', type: 'error' };
+    if (!generatedData || !generatedData.title || !generatedData.content || !generatedData.tags) {
+        return { message: `AI failed to generate a valid post. Response was incomplete. Received: ${JSON.stringify(generatedData)}`, type: 'error' };
     }
 
     const image = findImage(categorySlug, true);

@@ -37,13 +37,13 @@ const prompt = ai.definePrompt({
   name: 'generateBlogPostPrompt',
   input: {schema: GenerateBlogPostInputSchema},
   output: {schema: GenerateBlogPostOutputSchema},
-  prompt: `You are an expert blog post writer tasked with creating high-quality, detailed content. Write a comprehensive and engaging blog post about the following category: {{{category}}}.
+  prompt: `You are an expert blog post writer. Create a comprehensive and engaging blog post about the following category: {{{category}}}.
 
-    The blog post must adhere to the following strict requirements:
-    1.  **Title:** A compelling and SEO-friendly title.
-    2.  **Description:** A detailed, multi-sentence paragraph that summarizes the article, suitable for meta descriptions.
-    3.  **Content:** The main body must be substantial, at least 5 paragraphs long. It should be well-structured with multiple H2 and H3 headings to break up the text and improve readability. Provide in-depth information and a clear voice.
-    4.  **Tags:** A list of 5 to 10 relevant and specific tags for the blog post.
+  Your response must be a JSON object with the following structure:
+  - "title": A compelling and SEO-friendly title.
+  - "description": A detailed, multi-sentence paragraph that summarizes the article.
+  - "content": The main body, at least 5 paragraphs long, with multiple H2 and H3 headings.
+  - "tags": An array of 5 to 10 relevant tags.
   `,
 });
 
