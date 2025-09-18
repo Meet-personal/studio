@@ -1,5 +1,5 @@
 
-import { getPost, getPosts } from '@/lib/posts';
+import { getPost } from '@/lib/posts';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { CATEGORIES } from '@/lib/constants';
@@ -41,13 +41,6 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
       ],
     },
   };
-}
-
-export async function generateStaticParams() {
-    const posts = await getPosts();
-    return posts.map((post) => ({
-      id: post.id,
-    }));
 }
 
 export default async function PostPage({ params }: PostPageProps) {

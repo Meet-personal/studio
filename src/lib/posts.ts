@@ -1,20 +1,7 @@
 
 import type { Post } from '@/lib/types';
 import { db } from './firebase';
-import { collection, getDocs, getDoc, doc, addDoc, query, where, orderBy, Timestamp } from 'firebase/firestore';
-
-const generatePostId = (title: string) => {
-    const baseId = title
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, '') 
-        .replace(/\s+/g, '-')         
-        .replace(/-+/g, '-');       
-
-    const randomSuffix = Math.random().toString(36).substring(2, 8);
-    
-    return `${baseId.slice(0, 40)}-${randomSuffix}`;
-}
+import { collection, getDocs, getDoc, doc, addDoc, setDoc, query, where, orderBy, Timestamp } from 'firebase/firestore';
 
 const postFromDoc = (doc: any): Post => {
     const data = doc.data();
@@ -71,15 +58,24 @@ export const getPost = async (id: string): Promise<Post | undefined> => {
 
 export const addPost = async (post: Omit<Post, 'id' | 'createdAt'>): Promise<Post> => {
   const createdAt = new Date();
+  const id = post.title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 50) + '-' + Math.random().toString(36).substring(2, 8);
+
   const newPostData = {
     ...post,
+    id,
     createdAt: Timestamp.fromDate(createdAt),
   };
   
   try {
-    const docRef = await addDoc(collection(db, 'posts'), newPostData);
+    await setDoc(doc(db, 'posts', id), newPostData);
     return {
-      id: docRef.id,
+      id,
       ...post,
       createdAt,
     };
