@@ -31,8 +31,8 @@ export default function RootLayout({
       </head>
       <body className={cn('font-body antialiased')}>
         <SidebarProvider>
-          <div className="relative flex min-h-screen flex-col">
-            <Sidebar collapsible="icon" className="bg-sidebar-background">
+          <div className="relative flex min-h-screen">
+            <Sidebar collapsible="icon">
               <SidebarHeader className="p-4">
                 <div className="flex items-center gap-2">
                   <Logo className="w-8 h-8 text-primary" />
@@ -45,13 +45,11 @@ export default function RootLayout({
                 <SidebarNav />
               </SidebarContent>
             </Sidebar>
-            <SidebarInset>
-              <div className="flex flex-1 flex-col min-h-0">
-                <Header />
-                <main className="flex-1 overflow-y-auto">{children}</main>
-                <Footer />
-              </div>
-            </SidebarInset>
+            <div className="flex flex-col flex-1">
+              <Header />
+              <main className="flex-1 overflow-y-auto p-4 md:p-8">{children}</main>
+              <Footer />
+            </div>
           </div>
         </SidebarProvider>
         <Toaster />

@@ -29,7 +29,7 @@ export default async function PostPage({ params }: PostPageProps) {
   const category = CATEGORIES.find(c => c.slug === post.category);
 
   return (
-    <article className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+    <article className="max-w-4xl mx-auto">
       <header className="mb-8">
         {category && (
             <Link href={`/category/${category.slug}`}>

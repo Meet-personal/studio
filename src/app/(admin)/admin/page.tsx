@@ -47,7 +47,7 @@ export default function AdminPage() {
   }, [password]);
 
   return (
-    <div className="p-4 md:p-8">
+    <>
         <header className="mb-8">
             <h1 className="text-4xl font-bold font-headline text-foreground">Admin Dashboard</h1>
             <p className="text-muted-foreground mt-2">Generate new blog posts for any category.</p>
@@ -95,6 +95,6 @@ export default function AdminPage() {
                 </form>
             </CardContent>
         </Card>
-    </div>
+    </>
   );
 }

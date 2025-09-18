@@ -13,7 +13,7 @@ export default async function AnalyticsPage() {
   }));
 
   return (
-    <div className="p-4 md:p-8">
+    <>
         <header className="mb-8">
             <h1 className="text-4xl font-bold font-headline text-foreground">Analytics</h1>
             <p className="text-muted-foreground mt-2">An overview of your blog's content.</p>
@@ -49,6 +49,6 @@ export default async function AnalyticsPage() {
                );
             })}
         </div>
-    </div>
+    </>
   );
 }

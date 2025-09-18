@@ -8,7 +8,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
   const allPosts = getPosts({ query });
 
   return (
-    <div className="p-4 md:p-8">
+    <>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
         <div>
           <h1 className="text-4xl font-bold font-headline mb-2 text-foreground">
@@ -26,6 +26,6 @@ export default async function HomePage({ searchParams }: { searchParams?: { quer
       ) : null}
 
       <TodaysPosts allPosts={allPosts} isSearchResults={!!query} />
-    </div>
+    </>
   );
 }

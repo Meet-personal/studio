@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export default function ContactPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+    <div className="max-w-4xl mx-auto">
       <header className="mb-8 text-center">
         <h1 className="text-4xl md:text-5xl font-extrabold font-headline text-foreground leading-tight mb-4">
           Contact Us

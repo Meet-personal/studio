@@ -26,7 +26,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   return (
-    <div className="p-4 md:p-8">
+    <>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
         <div>
             <h1 className="text-4xl font-bold font-headline text-foreground">{category.name}</h1>
@@ -46,6 +46,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <p>You can create one in the admin dashboard.</p>
         </div>
       )}
-    </div>
+    </>
   );
 }

@@ -10,7 +10,7 @@ export function Header() {
     const isMobile = useIsMobile();
 
     return (
-        <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm md:justify-end">
+        <header className="sticky top-0 z-10 flex h-16 items-center border-b bg-background/80 px-4 backdrop-blur-sm md:justify-end">
              {isMobile && (
                 <div className="flex items-center gap-2">
                     <SidebarTrigger />
