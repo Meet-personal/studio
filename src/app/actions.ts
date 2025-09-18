@@ -35,6 +35,10 @@ export async function createPost(
   try {
     const generatedData = await generateBlogPost({ category: categoryDetails.name });
 
+    if (!generatedData || !generatedData.title || !generatedData.content) {
+        return { message: 'AI failed to generate a valid post. The response was incomplete.', type: 'error' };
+    }
+
     const image = findImage(categorySlug, true);
 
     const postData = {
@@ -54,9 +58,9 @@ export async function createPost(
     revalidatePath(`/post/${newPost.id}`);
     
     return { message: 'Successfully generated a new post!', type: 'success' };
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
-    return { message: 'Failed to generate post. Please try again.', type: 'error' };
+    return { message: `Failed to generate post: ${e.message || 'An unknown error occurred.'}`, type: 'error' };
   }
 }
 
