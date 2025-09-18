@@ -5,7 +5,9 @@ import { findImage } from './placeholder-images';
 import { isToday } from 'date-fns';
 
 const generatePostId = (title: string) => {
-    return title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').slice(0, 50);
+    const baseId = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').slice(0, 40);
+    const randomSuffix = Math.random().toString(36).substring(2, 8);
+    return `${baseId}-${randomSuffix}`;
 }
 
 const createInitialPost = (categorySlug: string, title: string, description: string, content: string, tags: string[], daysAgo: number): Post => {
