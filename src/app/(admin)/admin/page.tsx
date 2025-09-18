@@ -10,6 +10,8 @@ import { useToast } from '@/hooks/use-toast';
 import { CATEGORIES } from '@/lib/constants';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -26,6 +28,7 @@ export default function AdminPage() {
   const [state, formAction] = useActionState(createPost, initialState);
   const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     if (state) {
@@ -52,9 +55,9 @@ export default function AdminPage() {
             <CardContent>
                 <form action={formAction} className="space-y-6">
                     <div>
-                        <label htmlFor="category" className="block text-sm font-medium mb-2">
+                        <Label htmlFor="category" className="block text-sm font-medium mb-2">
                             Category
-                        </label>
+                        </Label>
                         <Select name="category" required value={selectedCategory} onValueChange={setSelectedCategory}>
                             <SelectTrigger id="category" className="w-full">
                                 <SelectValue placeholder="Select a category" />
@@ -70,6 +73,17 @@ export default function AdminPage() {
                                 ))}
                             </SelectContent>
                         </Select>
+                    </div>
+                    <div>
+                        <Label htmlFor="password">Password</Label>
+                        <Input
+                            id="password"
+                            name="password"
+                            type="password"
+                            required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                     </div>
                     <SubmitButton />
                 </form>

@@ -12,7 +12,6 @@ interface PostCardProps {
 
 export default function PostCard({ post }: PostCardProps) {
   const category = CATEGORIES.find(c => c.slug === post.category);
-  const excerpt = post.content.split(' ').slice(0, 25).join(' ') + '...';
 
   return (
     <Link href={`/post/${post.id}`} className="group block">
@@ -34,7 +33,7 @@ export default function PostCard({ post }: PostCardProps) {
           <CardTitle className="text-xl font-headline group-hover:text-primary transition-colors">
             {post.title}
           </CardTitle>
-          <p className="mt-4 text-muted-foreground text-sm">{excerpt}</p>
+          <p className="mt-4 text-muted-foreground text-sm">{post.description}</p>
         </CardContent>
         <CardFooter className="p-6 pt-0">
           <p className="text-xs text-muted-foreground">

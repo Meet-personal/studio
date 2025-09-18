@@ -1,8 +1,7 @@
-
 'use server';
 
 import { generateBlogPost } from '@/ai/flows/generate-blog-post';
-import { addPost, getPosts, isAdmin, hasPostForToday } from '@/lib/posts';
+import { addPost, getPosts, hasPostForToday } from '@/lib/posts';
 import { revalidatePath } from 'next/cache';
 import { findImage } from '@/lib/placeholder-images';
 import { CATEGORIES } from '@/lib/constants';
@@ -16,8 +15,9 @@ export async function createPost(
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
-  if (!isAdmin()) {
-    return { message: 'You do not have permission to create a post.', type: 'error' };
+  const password = formData.get('password');
+  if (password !== 'admin123') {
+      return { message: 'Incorrect password.', type: 'error' };
   }
   
   const categorySlug = formData.get('category') as string;
@@ -41,6 +41,7 @@ export async function createPost(
 
     const postData = {
       title: generatedData.title,
+      description: generatedData.description,
       content: generatedData.content,
       category: categorySlug,
       tags: generatedData.tags,
@@ -53,6 +54,7 @@ export async function createPost(
 
     revalidatePath('/');
     revalidatePath(`/category/${categorySlug}`);
+    revalidatePath(`/post/${newPost.id}`);
     
     return { message: 'Successfully generated a new post!', type: 'success' };
   } catch (e) {
