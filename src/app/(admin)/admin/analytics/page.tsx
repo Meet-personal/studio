@@ -32,19 +32,22 @@ export default async function AnalyticsPage() {
 
         <h2 className="text-2xl font-bold font-headline text-foreground mt-12 mb-6">Posts per Category</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {postsByCategory.map(category => (
+            {postsByCategory.map(category => {
+                 const CategoryIcon = CATEGORIES.find(c => c.name === category.name)?.Icon;
+                 return (
                  <Card key={category.name}>
                  <CardHeader className="flex flex-row items-center justify-between pb-2">
                    <CardTitle className="text-base font-medium">{category.name}</CardTitle>
                    {
-                        CATEGORIES.find(c => c.name === category.name)?.Icon({ className: "h-5 w-5 text-muted-foreground" })
+                        CategoryIcon && <CategoryIcon className="h-5 w-5 text-muted-foreground" />
                    }
                  </CardHeader>
                  <CardContent>
                    <div className="text-3xl font-bold">{category.count}</div>
                  </CardContent>
                </Card>
-            ))}
+               );
+            })}
         </div>
     </div>
   );
