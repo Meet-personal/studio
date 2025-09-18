@@ -9,7 +9,7 @@ const createInitialPost = (categorySlug: string, title: string, content: string,
     createdAt.setDate(createdAt.getDate() - daysAgo);
     const image = findImage(categorySlug);
     return {
-        id: `post_${Date.now()}_${categorySlug}_${Math.random()}`,
+        id: `post_${createdAt.getTime()}_${categorySlug}`,
         title,
         content,
         category: categorySlug,
