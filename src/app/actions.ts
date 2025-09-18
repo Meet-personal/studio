@@ -17,11 +17,6 @@ export async function createPost(
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
-  const password = formData.get('password');
-  if (password !== 'admin123') {
-      return { message: 'Incorrect password.', type: 'error' };
-  }
-  
   const categorySlug = formData.get('category') as string;
   if (!categorySlug) {
     return { message: 'Category is required.', type: 'error' };
