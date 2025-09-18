@@ -1,7 +1,7 @@
 
 'use client';
 
-import { isAdmin } from '@/lib/posts';
+import { isAdmin } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 

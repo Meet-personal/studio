@@ -25,7 +25,7 @@ function SubmitButton() {
 
 export default function AdminPage() {
   const initialState: FormState = null;
-  const [state, formAction] = useActionState(createPost, initialState);
+  const [state, formAction] = useActionS.tate(createPost, initialState);
   const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [password, setPassword] = useState('');
@@ -39,6 +39,12 @@ export default function AdminPage() {
       });
     }
   }, [state, toast]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('admin-password', password);
+    }
+  }, [password]);
 
   return (
     <div className="p-4 md:p-8">

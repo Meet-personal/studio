@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarSeparator } from '@/components/ui/sidebar';
 import { CATEGORIES, ADMIN_CATEGORIES } from '@/lib/constants';
 import { Home } from 'lucide-react';
-import { isAdmin } from '@/lib/posts';
+import { isAdmin } from '@/lib/auth';
 import { useState, useEffect } from 'react';
 
 export default function SidebarNav() {

@@ -1,7 +1,7 @@
 'use server';
 
 import { generateBlogPost } from '@/ai/flows/generate-blog-post';
-import { addPost, getPosts, hasPostForToday } from '@/lib/posts';
+import { addPost, hasPostForToday } from '@/lib/posts';
 import { revalidatePath } from 'next/cache';
 import { findImage } from '@/lib/placeholder-images';
 import { CATEGORIES } from '@/lib/constants';
