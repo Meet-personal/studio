@@ -25,7 +25,7 @@ function SubmitButton() {
 
 export default function AdminPage() {
   const initialState: FormState = null;
-  const [state, formAction] = useActionS.tate(createPost, initialState);
+  const [state, formAction] = useActionState(createPost, initialState);
   const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [password, setPassword] = useState('');

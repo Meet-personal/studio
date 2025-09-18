@@ -2,7 +2,7 @@
 'use client';
 
 import { isAdmin } from '@/lib/auth';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function AdminLayout({
@@ -11,15 +11,23 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
+    // The /admin page is where the user logs in, so we don't protect it.
+    if (pathname === '/admin') {
+        setIsAuthorized(true);
+        return;
+    }
+    
+    // For other admin pages, check for authorization.
     if (!isAdmin()) {
-      router.push('/');
+      router.push('/admin');
     } else {
       setIsAuthorized(true);
     }
-  }, [router]);
+  }, [router, pathname]);
 
   if (!isAuthorized) {
     return (
