@@ -1,3 +1,53 @@
+
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "it",
+      "description": "An image representing the IT category.",
+      "imageUrl": "https://picsum.photos/seed/it/600/400",
+      "imageHint": "computer code"
+    },
+    {
+      "id": "consultant",
+      "description": "An image representing the Consultant category.",
+      "imageUrl": "https://picsum.photos/seed/consultant/600/400",
+      "imageHint": "business meeting"
+    },
+    {
+      "id": "travel",
+      "description": "An image representing the Travel category.",
+      "imageUrl": "https://picsum.photos/seed/travel/600/400",
+      "imageHint": "exotic landscape"
+    },
+    {
+      "id": "finance",
+      "description": "An image representing the Finance category.",
+      "imageUrl": "https://picsum.photos/seed/finance/600/400",
+      "imageHint": "stock market"
+    },
+    {
+      "id": "business",
+      "description": "An image representing the Business category.",
+      "imageUrl": "https://picsum.photos/seed/business/600/400",
+      "imageHint": "office building"
+    },
+    {
+      "id": "companies",
+      "description": "An image representing the Companies category.",
+      "imageUrl": "https://picsum.photos/seed/companies/600/400",
+      "imageHint": "corporate headquarters"
+    },
+    {
+      "id": "cryptocoins",
+      "description": "An image representing the Cryptocoins category.",
+      "imageUrl": "https://picsum.photos/seed/crypto/600/400",
+      "imageHint": "digital currency"
+    },
+    {
+      "id": "default",
+      "description": "A default placeholder image.",
+      "imageUrl": "https://picsum.photos/seed/default/600/400",
+      "imageHint": "abstract pattern"
+    }
+  ]
 }
