@@ -5,7 +5,7 @@ import SearchPosts from '@/components/search-posts';
 
 export default async function HomePage({ searchParams }: { searchParams?: { query?: string } }) {
   const query = searchParams?.query || '';
-  const allPosts = getPosts({ query });
+  const allPosts = await getPosts({ query });
 
   return (
     <>

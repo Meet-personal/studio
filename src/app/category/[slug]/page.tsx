@@ -35,7 +35,7 @@ export async function generateStaticParams() {
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = params;
   const category = CATEGORIES.find((c) => c.slug === slug);
-  const posts = getPosts({ category: slug });
+  const posts = await getPosts({ category: slug });
 
   if (!category) {
     notFound();

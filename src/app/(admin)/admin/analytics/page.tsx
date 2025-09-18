@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CATEGORIES } from "@/lib/constants";
 
 export default async function AnalyticsPage() {
-  const allPosts = getPosts();
+  const allPosts = await getPosts();
   const totalPosts = allPosts.length;
 
   const postsByCategory = CATEGORIES.map(category => ({

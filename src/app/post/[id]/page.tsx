@@ -14,7 +14,7 @@ interface PostPageProps {
 }
 
 export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
-  const post = getPost(params.id);
+  const post = await getPost(params.id);
 
   if (!post) {
     return {
@@ -44,14 +44,14 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
 }
 
 export async function generateStaticParams() {
-    const posts = getPosts();
+    const posts = await getPosts();
     return posts.map((post) => ({
       id: post.id,
     }));
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = getPost(params.id);
+  const post = await getPost(params.id);
 
   if (!post) {
     notFound();
