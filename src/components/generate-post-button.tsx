@@ -1,8 +1,8 @@
 
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
-import { useEffect } from 'react';
+import { useActionState, useEffect } from 'react';
+import { useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { createPost, type FormState } from '@/app/actions';
 import { Loader2, Wand2 } from 'lucide-react';
@@ -20,7 +20,7 @@ function SubmitButton() {
 
 export function GeneratePostButton({ category }: { category: string }) {
   const initialState: FormState = null;
-  const [state, formAction] = useFormState(createPost, initialState);
+  const [state, formAction] = useActionState(createPost, initialState);
   const { toast } = useToast();
 
   useEffect(() => {
