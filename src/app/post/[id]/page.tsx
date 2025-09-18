@@ -1,5 +1,5 @@
 
-import { getPost } from '@/lib/posts';
+import { getPost, getPosts } from '@/lib/posts';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { CATEGORIES } from '@/lib/constants';
@@ -10,6 +10,13 @@ interface PostPageProps {
   params: {
     id: string;
   };
+}
+
+export async function generateStaticParams() {
+    const posts = getPosts();
+    return posts.map((post) => ({
+      id: post.id,
+    }));
 }
 
 export default async function PostPage({ params }: PostPageProps) {

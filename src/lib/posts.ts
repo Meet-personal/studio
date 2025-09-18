@@ -4,16 +4,15 @@ import { CATEGORIES } from '@/lib/constants';
 import { findImage } from './placeholder-images';
 import { isToday } from 'date-fns';
 
-const generatePostId = (createdAt: Date, title: string) => {
-    const formattedTitle = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').slice(0, 50);
-    return `${createdAt.getTime()}-${formattedTitle}`;
+const generatePostId = (title: string) => {
+    return title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').slice(0, 50);
 }
 
 const createInitialPost = (categorySlug: string, title: string, content: string, tags: string[], daysAgo: number): Post => {
     const createdAt = new Date();
     createdAt.setDate(createdAt.getDate() - daysAgo);
     const image = findImage(categorySlug, true); // use random image
-    const id = generatePostId(createdAt, title)
+    const id = generatePostId(title)
     return {
         id,
         title,
@@ -54,7 +53,7 @@ export const getPost = (id: string): Post | undefined => {
 
 export const addPost = (post: Omit<Post, 'id' | 'createdAt'>) => {
   const createdAt = new Date();
-  const id = generatePostId(createdAt, post.title);
+  const id = generatePostId(post.title);
   const newPost: Post = {
     ...post,
     id,
@@ -65,9 +64,10 @@ export const addPost = (post: Omit<Post, 'id' | 'createdAt'>) => {
 };
 
 export function isAdmin() {
-  // For now, we'll just return true.
-  // In a real app, you'd have a proper user authentication and role system.
-  return true;
+  if (typeof window === 'undefined') {
+    return true; // During server-side rendering, assume admin
+  }
+  return sessionStorage.getItem('isAdmin') === 'true';
 }
 
 export function hasPostForToday(categorySlug: string): boolean {
