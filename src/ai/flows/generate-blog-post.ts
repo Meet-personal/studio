@@ -22,7 +22,7 @@ export type GenerateBlogPostInput = z.infer<typeof GenerateBlogPostInputSchema>;
 
 const GenerateBlogPostOutputSchema = z.object({
   title: z.string().describe('The title of the blog post.'),
-  content: z.string().describe('The content of the blog post.'),
+  content: z.string().describe('The content of the blog post, at least 4 paragraphs long.'),
   tags: z.array(z.string()).describe('Relevant tags for the blog post.'),
 });
 export type GenerateBlogPostOutput = z.infer<typeof GenerateBlogPostOutputSchema>;
@@ -35,10 +35,10 @@ const prompt = ai.definePrompt({
   name: 'generateBlogPostPrompt',
   input: {schema: GenerateBlogPostInputSchema},
   output: {schema: GenerateBlogPostOutputSchema},
-  prompt: `You are a blog post writer. Write a blog post about the following category: {{{category}}}.
+  prompt: `You are a blog post writer. Write a detailed and engaging blog post about the following category: {{{category}}}.
 
-    The blog post should have a title, content, and a list of relevant tags.
-    Make sure that the title and content are engaging.
+    The blog post must have a title, content that is at least four paragraphs long, and a list of relevant tags.
+    Make sure the content provides in-depth information and is well-structured.
   `,
 });
 

@@ -2,7 +2,7 @@
 'use server';
 
 import { generateBlogPost } from '@/ai/flows/generate-blog-post';
-import { addPost } from '@/lib/posts';
+import { addPost, getPosts, isAdmin, hasPostForToday } from '@/lib/posts';
 import { revalidatePath } from 'next/cache';
 import { findImage } from '@/lib/placeholder-images';
 import { CATEGORIES } from '@/lib/constants';
@@ -16,9 +16,17 @@ export async function createPost(
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
+  if (!isAdmin()) {
+    return { message: 'You do not have permission to create a post.', type: 'error' };
+  }
+  
   const categorySlug = formData.get('category') as string;
   if (!categorySlug) {
     return { message: 'Category is required.', type: 'error' };
+  }
+
+  if (hasPostForToday(categorySlug)) {
+    return { message: `A post for this category has already been created today.`, type: 'error' };
   }
   
   const categoryDetails = CATEGORIES.find(c => c.slug === categorySlug);
@@ -29,7 +37,7 @@ export async function createPost(
   try {
     const generatedData = await generateBlogPost({ category: categoryDetails.name });
 
-    const image = findImage(categorySlug);
+    const image = findImage(categorySlug, true);
 
     const newPost = {
       id: `post_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,

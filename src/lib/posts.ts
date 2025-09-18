@@ -2,6 +2,7 @@
 import type { Post } from '@/lib/types';
 import { CATEGORIES } from '@/lib/constants';
 import { findImage } from './placeholder-images';
+import { isToday } from 'date-fns';
 
 const createInitialPost = (categorySlug: string, title: string, content: string, tags: string[], daysAgo: number): Post => {
     const createdAt = new Date();
@@ -48,3 +49,16 @@ export const getPost = (id: string): Post | undefined => {
 export const addPost = (post: Post) => {
   posts.unshift(post);
 };
+
+export function isAdmin() {
+  // For now, we'll just return true.
+  // In a real app, you'd have a proper user authentication and role system.
+  return true;
+}
+
+export function hasPostForToday(categorySlug: string): boolean {
+  return posts.some(
+    (post) =>
+      post.category === categorySlug && isToday(new Date(post.createdAt))
+  );
+}

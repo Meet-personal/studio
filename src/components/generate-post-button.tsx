@@ -25,18 +25,11 @@ export function GeneratePostButton({ category }: { category: string }) {
 
   useEffect(() => {
     if (state) {
-      if (state.type === 'success') {
-        toast({
-          title: 'Success!',
-          description: state.message,
-        });
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Oh no!',
-          description: state.message,
-        });
-      }
+      toast({
+        title: state.type === 'success' ? 'Success!' : 'Oh no!',
+        description: state.message,
+        variant: state.type === 'error' ? 'destructive' : 'default',
+      });
     }
   }, [state, toast]);
 
