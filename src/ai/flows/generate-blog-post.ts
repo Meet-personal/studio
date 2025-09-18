@@ -22,8 +22,8 @@ export type GenerateBlogPostInput = z.infer<typeof GenerateBlogPostInputSchema>;
 
 const GenerateBlogPostOutputSchema = z.object({
   title: z.string().describe('The title of the blog post.'),
-  description: z.string().describe('A short, one-sentence description of the blog post.'),
-  content: z.string().describe('The content of the blog post, at least 6 paragraphs long.'),
+  description: z.string().describe('A detailed, multi-sentence description of the blog post, suitable for SEO.'),
+  content: z.string().describe('The content of the blog post, at least 10 paragraphs long with multiple headings.'),
   tags: z.array(z.string()).describe('Relevant tags for the blog post.'),
 });
 export type GenerateBlogPostOutput = z.infer<typeof GenerateBlogPostOutputSchema>;
@@ -36,10 +36,13 @@ const prompt = ai.definePrompt({
   name: 'generateBlogPostPrompt',
   input: {schema: GenerateBlogPostInputSchema},
   output: {schema: GenerateBlogPostOutputSchema},
-  prompt: `You are a blog post writer. Write a detailed and engaging blog post about the following category: {{{category}}}.
+  prompt: `You are an expert blog post writer tasked with creating high-quality, detailed content suitable for a website aiming for Google AdSense approval. Write a comprehensive and engaging blog post about the following category: {{{category}}}.
 
-    The blog post must have a title, a short one-sentence description, content that is at least six paragraphs long, and a list of relevant tags.
-    Make sure the content provides in-depth information and is well-structured.
+    The blog post must adhere to the following strict requirements:
+    1.  **Title:** A compelling and SEO-friendly title.
+    2.  **Description:** A detailed, multi-sentence paragraph that summarizes the article, suitable for meta descriptions.
+    3.  **Content:** The main body must be substantial, at least 10 paragraphs long. It should be well-structured with multiple H2 and H3 headings to break up the text and improve readability. Provide in-depth information, original insights, and a clear, authoritative voice.
+    4.  **Tags:** A list of relevant and specific tags for the blog post.
   `,
 });
 
