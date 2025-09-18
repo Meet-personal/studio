@@ -3,7 +3,6 @@ import { getPosts } from '@/lib/posts';
 import { CATEGORIES } from '@/lib/constants';
 import { notFound } from 'next/navigation';
 import PostCard from '@/components/post-card';
-import { GeneratePostButton } from '@/components/generate-post-button';
 
 interface CategoryPageProps {
   params: {
@@ -33,7 +32,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             <h1 className="text-4xl font-bold font-headline text-foreground">{category.name}</h1>
             <p className="text-muted-foreground mt-2">Browse the latest posts in {category.name}.</p>
         </div>
-        <GeneratePostButton category={slug} />
       </div>
 
       {posts.length > 0 ? (
@@ -45,7 +43,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       ) : (
         <div className="text-center py-16 text-muted-foreground border-2 border-dashed rounded-lg">
           <p className="text-lg font-semibold">No posts in this category yet.</p>
-          <p>Be the first to create one!</p>
+          <p>You can create one in the admin dashboard.</p>
         </div>
       )}
     </div>
