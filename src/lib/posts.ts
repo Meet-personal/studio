@@ -4,12 +4,17 @@ import { CATEGORIES } from '@/lib/constants';
 import { findImage } from './placeholder-images';
 import { isToday } from 'date-fns';
 
+const generatePostId = (createdAt: Date, categorySlug: string) => {
+    return `post_${createdAt.getTime()}_${categorySlug.replace(/\s+/g, '-')}`;
+}
+
 const createInitialPost = (categorySlug: string, title: string, content: string, tags: string[], daysAgo: number): Post => {
     const createdAt = new Date();
     createdAt.setDate(createdAt.getDate() - daysAgo);
-    const image = findImage(categorySlug);
+    const image = findImage(categorySlug, true); // use random image
+    const id = generatePostId(createdAt, categorySlug)
     return {
-        id: `post_${createdAt.getTime()}_${categorySlug}`,
+        id,
         title,
         content,
         category: categorySlug,
@@ -47,7 +52,15 @@ export const getPost = (id: string): Post | undefined => {
 };
 
 export const addPost = (post: Post) => {
-  posts.unshift(post);
+  const createdAt = new Date();
+  const id = generatePostId(createdAt, post.category)
+  const newPost: Post = {
+    ...post,
+    id,
+    createdAt
+  };
+  posts.unshift(newPost);
+  return newPost;
 };
 
 export function isAdmin() {

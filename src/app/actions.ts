@@ -39,18 +39,17 @@ export async function createPost(
 
     const image = findImage(categorySlug, true);
 
-    const newPost = {
-      id: `post_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+    const postData = {
       title: generatedData.title,
       content: generatedData.content,
       category: categorySlug,
       tags: generatedData.tags,
-      createdAt: new Date(),
       image: image.imageUrl,
       imageHint: image.imageHint,
     };
 
-    addPost(newPost);
+    // The addPost function now handles ID and createdAt
+    const newPost = addPost(postData as any);
 
     revalidatePath('/');
     revalidatePath(`/category/${categorySlug}`);
