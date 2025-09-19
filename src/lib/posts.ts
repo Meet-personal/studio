@@ -1,13 +1,16 @@
 
 import type { Post } from '@/lib/types';
 import { Pool } from 'pg';
+import { config } from 'dotenv';
+
+config(); // Load environment variables from .env file
 
 // Initialize the connection pool
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL,
-  ssl: {
-    rejectUnauthorized: false // Required for Neon
-  }
+  ssl: process.env.POSTGRES_URL ? {
+    rejectUnauthorized: false
+  } : false,
 });
 
 // Function to ensure the 'posts' table exists
@@ -33,10 +36,16 @@ const ensureTableExists = async () => {
 };
 
 // Ensure table exists on startup
-ensureTableExists().catch(console.error);
+if (process.env.POSTGRES_URL) {
+    ensureTableExists().catch(console.error);
+}
 
 
 export const getPosts = async (options?: { category?: string, query?: string }): Promise<Post[]> => {
+  if (!process.env.POSTGRES_URL) {
+    console.warn('POSTGRES_URL is not set, returning empty posts array.');
+    return [];
+  }
   const client = await pool.connect();
   try {
     let queryText = 'SELECT id, title, description, content, category, tags, "createdAt", image, "imageHint" FROM posts';
@@ -86,6 +95,9 @@ export const getPosts = async (options?: { category?: string, query?: string }):
 };
 
 export const getPost = async (id: string): Promise<Post | undefined> => {
+  if (!process.env.POSTGRES_URL) {
+    return undefined;
+  }
   const client = await pool.connect();
   try {
     const res = await client.query('SELECT * FROM posts WHERE id = $1', [id]);
@@ -106,6 +118,9 @@ export const getPost = async (id: string): Promise<Post | undefined> => {
 };
 
 export const addPost = async (post: Omit<Post, 'id' | 'createdAt'>): Promise<Post> => {
+   if (!process.env.POSTGRES_URL) {
+    throw new Error('Database is not configured. POSTGRES_URL is missing.');
+  }
   const client = await pool.connect();
   const createdAt = new Date();
   const id = post.title
