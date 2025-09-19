@@ -5,7 +5,7 @@ import { useActionState, useEffect, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { createPost, type FormState } from '@/app/actions';
-import { Loader2, Wand2, BarChart3 } from 'lucide-react';
+import { Loader2, Wand2, BarChart3, Database } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { CATEGORIES } from '@/lib/constants';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -43,7 +43,7 @@ export default function AdminPage() {
     <>
         <header className="mb-8">
             <h1 className="text-4xl font-bold font-headline text-foreground">Admin Dashboard</h1>
-            <p className="text-muted-foreground mt-2">Generate new blog posts and view analytics.</p>
+            <p className="text-muted-foreground mt-2">Generate new blog posts and manage your content.</p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
@@ -79,20 +79,36 @@ export default function AdminPage() {
                 </CardContent>
             </Card>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Analytics</CardTitle>
-                    <CardDescription>View your blog's performance.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Link href="/admin/analytics" passHref>
-                        <Button variant="outline" className="w-full">
-                            <BarChart3 className="mr-2 h-4 w-4" />
-                            View Analytics
-                        </Button>
-                    </Link>
-                </CardContent>
-            </Card>
+            <div className="space-y-8">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Manage Content</CardTitle>
+                        <CardDescription>View, edit, or delete existing posts.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Link href="/admin/posts" passHref>
+                            <Button variant="outline" className="w-full">
+                                <Database className="mr-2 h-4 w-4" />
+                                Manage Posts
+                            </Button>
+                        </Link>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Analytics</CardTitle>
+                        <CardDescription>View your blog's performance.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Link href="/admin/analytics" passHref>
+                            <Button variant="outline" className="w-full">
+                                <BarChart3 className="mr-2 h-4 w-4" />
+                                View Analytics
+                            </Button>
+                        </Link>
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     </>
   );

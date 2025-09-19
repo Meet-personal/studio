@@ -163,3 +163,18 @@ export const addPost = async (post: Omit<Post, 'id' | 'createdAt'>): Promise<Pos
     client.release();
   }
 };
+
+export const deletePost = async (id: string): Promise<void> => {
+  if (!process.env.POSTGRES_URL) {
+    throw new Error('Database is not configured. POSTGRES_URL is missing.');
+  }
+  const client = await pool.connect();
+  try {
+    await client.query('DELETE FROM posts WHERE id = $1', [id]);
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    throw new Error('Failed to delete post from database.');
+  } finally {
+    client.release();
+  }
+};

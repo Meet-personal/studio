@@ -1,5 +1,5 @@
 
-import { Cpu, BriefcaseBusiness, Plane, Landmark, Users, Building, Bitcoin, LayoutDashboard, BarChart3, type LucideIcon } from 'lucide-react';
+import { Cpu, BriefcaseBusiness, Plane, Landmark, Users, Building, Bitcoin, LayoutDashboard, BarChart3, Database, type LucideIcon } from 'lucide-react';
 
 export type Category = {
   name: string;
@@ -27,4 +27,5 @@ export const CATEGORIES: Category[] = [
 export const ADMIN_CATEGORIES: AdminCategory[] = [
     { name: 'Dashboard', slug: 'dashboard', href: '/admin', Icon: LayoutDashboard },
     { name: 'Analytics', slug: 'analytics', href: '/admin/analytics', Icon: BarChart3 },
+    { name: 'Manage Posts', slug: 'posts', href: '/admin/posts', Icon: Database },
 ]

@@ -2,7 +2,7 @@
 'use server';
 
 import { generateBlogPost } from '@/ai/flows/generate-blog-post';
-import { addPost } from '@/lib/posts';
+import { addPost, deletePost as dbDeletePost } from '@/lib/posts';
 import { revalidatePath } from 'next/cache';
 import { findImage } from '@/lib/placeholder-images';
 import { CATEGORIES } from '@/lib/constants';
@@ -46,17 +46,41 @@ export async function createPost(
       imageHint: image.imageHint,
     };
 
-    const newPost = addPost(postData);
+    const newPost = await addPost(postData);
 
     revalidatePath('/');
     revalidatePath(`/category/${categorySlug}`);
     revalidatePath(`/post/${newPost.id}`);
+    revalidatePath('/admin/posts');
     
     return { message: 'Successfully generated a new post!', type: 'success' };
   } catch (e: any) {
     console.error(e);
     return { message: `Failed to generate post: ${e.message || 'An unknown error occurred.'}`, type: 'error' };
   }
+}
+
+export async function deletePost(
+    prevState: FormState,
+    formData: FormData
+): Promise<FormState> {
+    const postId = formData.get('postId') as string;
+    if (!postId) {
+        return { message: 'Post ID is required.', type: 'error'};
+    }
+
+    try {
+        await dbDeletePost(postId);
+        revalidatePath('/');
+        revalidatePath('/admin/posts');
+        // Revalidate all category and post pages, as we don't know the category from the ID alone
+        revalidatePath('/category');
+        revalidatePath('/post');
+        return { message: 'Successfully deleted post.', type: 'success'};
+    } catch (e: any) {
+        console.error(e);
+        return { message: `Failed to delete post: ${e.message || 'An unknown error occurred.'}`, type: 'error' };
+    }
 }
 
 export async function handleContactForm(
