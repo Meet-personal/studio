@@ -1,62 +1,112 @@
 
 import type { Post } from '@/lib/types';
-import { db } from './firebase';
-import { collection, getDocs, getDoc, doc, addDoc, setDoc, query, where, orderBy, Timestamp } from 'firebase/firestore';
+import { Pool } from 'pg';
 
-const postFromDoc = (doc: any): Post => {
-    const data = doc.data();
-    return {
-        id: doc.id,
-        ...data,
-        createdAt: (data.createdAt as Timestamp).toDate(),
-    } as Post;
+// Initialize the connection pool
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL,
+  ssl: {
+    rejectUnauthorized: false // Required for Neon
+  }
+});
+
+// Function to ensure the 'posts' table exists
+const ensureTableExists = async () => {
+    const client = await pool.connect();
+    try {
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS posts (
+                id VARCHAR(255) PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                description TEXT NOT NULL,
+                content TEXT NOT NULL,
+                category VARCHAR(100) NOT NULL,
+                tags TEXT[] NOT NULL,
+                "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                image VARCHAR(255) NOT NULL,
+                "imageHint" VARCHAR(255) NOT NULL
+            );
+        `);
+    } finally {
+        client.release();
+    }
 };
 
+// Ensure table exists on startup
+ensureTableExists().catch(console.error);
+
+
 export const getPosts = async (options?: { category?: string, query?: string }): Promise<Post[]> => {
+  const client = await pool.connect();
   try {
-    const postsCollection = collection(db, 'posts');
-    let queries = [];
+    let queryText = 'SELECT id, title, description, content, category, tags, "createdAt", image, "imageHint" FROM posts';
+    const params = [];
 
     if (options?.category) {
-        queries.push(where('category', '==', options.category));
+      params.push(options.category);
+      queryText += ` WHERE category = $${params.length}`;
     }
-    
-    queries.push(orderBy('createdAt', 'desc'));
-
-    const q = query(postsCollection, ...queries);
-    const querySnapshot = await getDocs(q);
-    let posts = querySnapshot.docs.map(postFromDoc);
 
     if (options?.query) {
-      const lowercasedQuery = options.query.toLowerCase();
-      posts = posts.filter(post => 
-        post.title.toLowerCase().includes(lowercasedQuery) ||
-        post.description.toLowerCase().includes(lowercasedQuery) ||
-        post.content.toLowerCase().includes(lowercasedQuery) ||
-        post.tags.some(tag => tag.toLowerCase().includes(lowercasedQuery))
-      );
+      const lowercasedQuery = `%${options.query.toLowerCase()}%`;
+      params.push(lowercasedQuery);
+      const queryParamIndex = `$${params.length}`;
+      
+      if (options.category) {
+        queryText += ' AND (';
+      } else {
+        queryText += ' WHERE (';
+      }
+      
+      queryText += `
+        LOWER(title) LIKE ${queryParamIndex} OR
+        LOWER(description) LIKE ${queryParamIndex} OR
+        LOWER(content) LIKE ${queryParamIndex} OR
+        EXISTS (
+            SELECT 1 FROM unnest(tags) AS tag WHERE LOWER(tag) LIKE ${queryParamIndex}
+        )
+      )`;
     }
-    
-    return posts;
+
+    queryText += ' ORDER BY "createdAt" DESC';
+
+    const res = await client.query(queryText, params);
+    return res.rows.map(row => ({
+      ...row,
+      createdAt: new Date(row.createdAt),
+      imageHint: row.imageHint
+    }));
+
   } catch (error) {
     console.error('Error fetching posts:', error);
     return [];
+  } finally {
+    client.release();
   }
 };
 
 export const getPost = async (id: string): Promise<Post | undefined> => {
+  const client = await pool.connect();
   try {
-    const postDoc = await getDoc(doc(db, 'posts', id));
-    if (postDoc.exists()) {
-      return postFromDoc(postDoc);
+    const res = await client.query('SELECT * FROM posts WHERE id = $1', [id]);
+    if (res.rows.length > 0) {
+      const row = res.rows[0];
+      return {
+        ...row,
+        createdAt: new Date(row.createdAt),
+        imageHint: row.imageHint
+      };
     }
   } catch (error) {
     console.error('Error fetching post:', error);
+  } finally {
+    client.release();
   }
   return undefined;
 };
 
 export const addPost = async (post: Omit<Post, 'id' | 'createdAt'>): Promise<Post> => {
+  const client = await pool.connect();
   const createdAt = new Date();
   const id = post.title
     .toLowerCase()
@@ -66,21 +116,35 @@ export const addPost = async (post: Omit<Post, 'id' | 'createdAt'>): Promise<Pos
     .replace(/-+/g, '-')
     .slice(0, 50) + '-' + Math.random().toString(36).substring(2, 8);
 
-  const newPostData = {
-    ...post,
+  const newPost = {
     id,
-    createdAt: Timestamp.fromDate(createdAt),
+    ...post,
+    createdAt,
   };
   
+  const queryText = `
+    INSERT INTO posts(id, title, description, content, category, tags, "createdAt", image, "imageHint")
+    VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)
+  `;
+  const values = [
+    newPost.id,
+    newPost.title,
+    newPost.description,
+    newPost.content,
+    newPost.category,
+    newPost.tags,
+    newPost.createdAt,
+    newPost.image,
+    newPost.imageHint,
+  ];
+
   try {
-    await setDoc(doc(db, 'posts', id), newPostData);
-    return {
-      id,
-      ...post,
-      createdAt,
-    };
+    await client.query(queryText, values);
+    return newPost;
   } catch (error) {
     console.error('Error adding post:', error);
     throw new Error('Failed to add post to database.');
+  } finally {
+    client.release();
   }
 };
